@@ -3,10 +3,13 @@ import Axios from 'axios';
 import { useState } from "react"
 import RecipeTile from './RecipeTile';
 function App() {
+  const [dishType,setDishType]=useState('')
+  const [maxCalorie,setMaxCalorie]=useState(99999)
+  const [minCalorie,setMinCalorie]=useState(0)
   const [query, setQuery] = useState('');  
   const [recipes, setrecipes] = useState([])
-  const [healthLabel, sethealthLabel] = useState("vegan")
-  var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b&health='+healthLabel;
+  const [healthLabel, sethealthLabel] = useState('')
+  var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
     var result = await Axios.get(url);
@@ -19,10 +22,17 @@ function App() {
     getRecipes();
   }
 
-
+  function calorie(min,max){
+    setMinCalorie(min);
+    setMaxCalorie(max);
+  }
   return (
     <div className="app">
      <h1>High End Secret Recipes ✔️</h1>
+
+
+    
+
      <form className="app__searchForm" onSubmit={onSubmit}>
        <input 
        type="text" 
@@ -32,53 +42,59 @@ function App() {
        onChange={(e) => setQuery(e.target.value)} 
        />
        <input className="app__submit" type="submit" value="Search"/>
-          
-        <select className="app_healthLabels">
-          <option onClick={() => sethealthLabel("vegan")}>
-            Vegan
-          </option>
-          <option  onClick={() => sethealthLabel("vegetarian")}>
-            Vegetarian
-          </option>
-          <option onClick={() => sethealthLabel("paleo")}>
-            Paleo
-          </option>
-          <option onClick={() => sethealthLabel("dairy-free")}>
-            Dairy Free
-          </option>
-          <option onClick={() => sethealthLabel("gluten-free")}>
-            Gluten Free
-          </option>
-          <option onClick={() => sethealthLabel("wheat-free")}>
-            Wheat Free
-          </option>
-          <option onClick={() => sethealthLabel("low-sugar")}>
-            Low Sugar
-          </option>
-          <option onClick={() => sethealthLabel("egg-free")}>
-            Egg Free
-          </option>
-          <option onClick={() => sethealthLabel("peanut-free")}>
-            Peanut Free
-          </option>
-          <option onClick={() => sethealthLabel("tree-nut-free")}>
-            Tree Nut Free
-          </option>
-          <option onClick={() => sethealthLabel("soy-free")}>
-            Soy Free
-          </option>
-          <option onClick={() => sethealthLabel("fish-free")}>
-            Fish Free
-          </option>
-          <option onClick={() => sethealthLabel("sellfish-free")}>
-            Shellfish Free
-          </option>
 
-        </select>
+
+      
+
+       <button onClick={() => calorie(0,500)}>0-500</button>
+       <button onClick={() => calorie(501,1000)}>501-1000</button>
+       <button onClick={() => calorie(1001,1500)}>1001-1500</button>
+       <button onClick={() => calorie(1501,2000)}>1501-2000</button>
+       <button onClick={() => calorie(0,99999)}>All</button>
+
+
+
+
+        <button onClick={() => setDishType("alcohol-cocktail")}>Alcohol Cocktail</button>
+        <button onClick={() => setDishType("bread")}>Bread</button>
+        <button onClick={() => setDishType("cereals")}>Cereals</button>
+        <button onClick={() => setDishType("drinks")}>Drinks</button>
+        <button onClick={() => setDishType("desserts")}>Desserts</button>
+        <button onClick={() => setDishType("main course")}>Main Course</button>
+        <button onClick={() => setDishType("preserve")}>Preserve</button>
+        <button onClick={() => setDishType("soup")}>Soup</button>
+        <button onClick={() => setDishType("starter")}>Starter</button>
+        <button onClick={() => setDishType("salad")}>Salad</button>
+        <button onClick={() => setDishType("")}>Reset</button>
+
+
+
+
+
+        <button onClick={() => sethealthLabel("Alcohol-Free")}>Alcohol Free</button>
+        <button onClick={() => sethealthLabel("Dairy-Free")}>Dairy Free</button>
+        <button onClick={() => sethealthLabel("Gluten-Free")}>Gluten Free</button>
+        <button onClick={() => sethealthLabel("Keto-Friendly")}>Keto Friendly</button>
+        <button onClick={() => sethealthLabel("Kosher")}>Kosher</button>
+        <button onClick={() => sethealthLabel("Low-Fat-Abs")}>Low Fat Abs</button>
+        <button onClick={() => sethealthLabel("No-Oil-Added")}>No Oil Added</button>
+        <button onClick={() => sethealthLabel("Low-Sugar")}>Low Sugar</button>
+        <button onClick={() => sethealthLabel("Peanut-Free")}>Peanut Free</button>
+        <button onClick={() => sethealthLabel("Pecatarian")}>Pecatarian</button>
+        <button onClick={() => sethealthLabel("Red-Meat-Free")}>Red Meat Free</button>
+        <button onClick={() => sethealthLabel("Shellfish-Free")}>Shellfish Free</button>
+        <button onClick={() => sethealthLabel("Soy-Free")}>Soy Free</button>
+        <button onClick={() => sethealthLabel("Tree-Nut-Free")}>Tree Nut Free</button>
+        <button onClick={() => sethealthLabel("Vegan")}>Vegan</button>
+        <button onClick={() => sethealthLabel("Vegetarian")}>Vegetarian</button>
+        <button onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
+        <button onClick={() => sethealthLabel("")}>Reset</button>
+       
+        
      </form>
      <div className='app__recipes'>
       {recipes.map((recipe) =>{
-         return <RecipeTile recipe={recipe}/>;
+         return  <RecipeTile recipe={recipe} minCalorie={minCalorie} maxCalorie={maxCalorie} healthLabel={healthLabel} dishType={dishType}/>;
       })}
      </div>
     </div>
