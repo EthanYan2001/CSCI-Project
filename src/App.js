@@ -28,9 +28,9 @@ function App() {
   
  const [user, setUser] = useState({});
  
- onAuthStateChanged(auth, (currentUser) => {
-   setUser(currentUser);
- });
+//  onAuthStateChanged(auth, (currentUser) => {
+//    setUser(currentUser);
+//  });
 
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
@@ -49,6 +49,9 @@ function App() {
   //   document.location.href = "Signup.html";
   // }
 
+  function saveRecipeCollectionRef() {
+
+  }
   const onSubmit = (e) => {
     e.preventDefault();
     getRecipes();
@@ -151,7 +154,7 @@ function App() {
         <button className='signupbutton'  onClick={() => sethealthLabel("")}>Sign Up!</button>
        
       
-        {/* { <><input placeholder="Email"
+        { <><input placeholder="Email"
           onChange={(event) => {
             setNewLogin(event.target.value);
           } } /><input placeholder="Password"
@@ -160,7 +163,7 @@ function App() {
             } } /></>
            
 } 
-{ <button onClick = {createUser}> Login </button> */}
+{ <button onClick = {createUser}> Login </button>}
 
 {/* Register button that would allow the button to successfully register with email and password */}
 <div>
@@ -186,7 +189,7 @@ function App() {
 
  <button onClick = { login }> Login </button>
  </div>
- 
+
 {/* This is just to authenticate that the email has been login and displayed the email.  */}
 <h4> User Logged In: </h4>
 {user?.email}
@@ -209,7 +212,7 @@ function App() {
      </form>
      <div className='app__recipes'>
       {recipes.map((recipe) =>{
-         return  <RecipeTile recipe={recipe} minCalorie={minCalorie} maxCalorie={maxCalorie} healthLabel={healthLabel} dishType={dishType}/>;
+         return  <RecipeTile recipe={recipe} minCalorie={minCalorie} maxCalorie={maxCalorie} healthLabel={healthLabel} dishType={dishType} url={url}/>;
       })}
      </div>
     </div>

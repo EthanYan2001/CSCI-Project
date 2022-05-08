@@ -1,9 +1,17 @@
 import React from 'react'
 import "./RecipeTile.css"
 //import {} from "./firebasefirestore";
-//import {saveRecipe} from "./App"
-export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,dishType}) {
+import {saveRecipe} from "./App"
+import { db } from './firebase-config'
+import { collection, addDoc} from '@firebase/firestore'
 
+export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,dishType, url}) {
+
+  const urlCollectionRef = collection(db, "saveUrl");
+
+  const saveUrl = async () =>{
+    await addDoc(urlCollectionRef,{url:url})
+}
 
 if(recipe['recipe']['calories'] >= minCalorie){
   if(recipe['recipe']['calories']<= maxCalorie){
@@ -20,8 +28,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
         <img className="recipeTile__img" src={recipe["recipe"]["image"]} />
         </a>
        <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-       <button onClick = {saveRecipe}> Save Button</button>
-
+       <button onClick = {saveUrl}> Save Button</button>
         </div>
     
   );
@@ -122,3 +129,4 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
     return null;
   }
 }
+
