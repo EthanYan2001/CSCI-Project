@@ -5,7 +5,7 @@ import RecipeTile from './RecipeTile';
 import {collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
 import { auth } from './firebase-config';
-import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut, updateCurrentUser } from '@firebase/auth';
 import { async } from '@firebase/util';
 
 
@@ -25,8 +25,13 @@ function App() {
   const[registerPassword, setRegisterPassword] = useState('');
   const[loginEmail, setLoginEmail] = useState('');
   const[loginPassword, setLoginPassword] = useState('');
-  const[user, setUser] = useState({});
+  
+ const [user, setUser] = useState({});
  
+ onAuthStateChanged(auth, (currentUser) => {
+   setUser(currentUser);
+ });
+
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
@@ -65,6 +70,7 @@ function App() {
     getUsers();
   }, []);
 
+  //register constant
   const register = async() => {
   try {
     const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
@@ -74,22 +80,21 @@ function App() {
    }
   };
 
+  //login constant: it would let us know in db that theres an acc and we can use to login
   const login = async () => {
     try {
-      const user = await createUserWithEmailAndPassword(auth, loginEmail, loginPassword);
+      const user = await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       console.log(user)
     }catch (error) {
       console.log(error.message);
      }
   };
 
+  //logout constant: where we can log out
   const logout = async () => {
     await signOut(auth);
   }
-
-  // onAuthStateChanged(auth, (currentUser) => {
-  //   setUser(currentUser);
-  // }) 
+  
   return (
     <div className="app">
      <h1></h1>
@@ -143,9 +148,10 @@ function App() {
         <button className='what17'  onClick={() => sethealthLabel("Vegetarian")}>Vegetarian</button>
         <button className='what18'  onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
         <button className='what19'  onClick={() => sethealthLabel("")}>Reset</button>
+        <button className='signupbutton'  onClick={() => sethealthLabel("")}>Sign Up!</button>
        
       
-        { <><input placeholder="Email"
+        {/* { <><input placeholder="Email"
           onChange={(event) => {
             setNewLogin(event.target.value);
           } } /><input placeholder="Password"
@@ -154,9 +160,9 @@ function App() {
             } } /></>
            
 } 
-{ <button onClick = {createUser}> Login </button>
+{ <button onClick = {createUser}> Login </button> */}
 
-}
+{/* Register button that would allow the button to successfully register with email and password */}
 <div>
   <h3> Register </h3>
  <input placeholder = "Email..." onChange = {(event) => {setRegisterEmail(event.target.value);
@@ -168,7 +174,7 @@ function App() {
   <button onClick = {register}> Sign Up </button>
 </div>
 
-
+{/* Login button that allows u to login successfully based on the databased saved from registering */}
 <div>
   <h3> Login </h3>
   <input placeholder = "Email..." onChange = {(event) => {setLoginEmail(event.target.value);
@@ -179,13 +185,16 @@ function App() {
  />
 
  <button onClick = { login }> Login </button>
+ </div>
+ 
+{/* This is just to authenticate that the email has been login and displayed the email.  */}
+<h4> User Logged In: </h4>
+{user?.email}
 
-<h4> User Logged In </h4>
-{auth?.email}
-
+{/* Log out button based on the logout constant. it lets you logout from the user based on the login databased above. */}
 <button onClick= { logout }> Sign Out </button>
 
-</div>
+
 
 
 {/* {users.map((user) => {
