@@ -1,7 +1,11 @@
 import './App.css';
 import Axios from 'axios';
-import { useState } from "react"
+import { useState, useEffect} from "react"
 import RecipeTile from './RecipeTile';
+import {collection, getDocs, addDoc } from "firebase/firestore";
+import { db } from "./firebase-config";
+
+
 function App() {
   const [dishType,setDishType]=useState('')
   const [maxCalorie,setMaxCalorie]=useState(99999)
@@ -9,6 +13,11 @@ function App() {
   const [query, setQuery] = useState('');  
   const [recipes, setrecipes] = useState([])
   const [healthLabel, sethealthLabel] = useState('')
+  const [users, setUsers] = useState([]);
+  const usersCollectionRef = collection(db, "users");
+  const[newLogin, setNewLogin] = useState("");
+  const[newPass, setNewPass] = useState("");
+
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
@@ -17,6 +26,9 @@ function App() {
     console.log(result.data)
   }
 
+  const createUser = async () => {
+    await addDoc(usersCollectionRef, {Login: newLogin, Pass: newPass });
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     getRecipes();
@@ -26,13 +38,21 @@ function App() {
     setMinCalorie(min);
     setMaxCalorie(max);
   }
+
+
+  useEffect(() => {
+    const getUsers = async() => {
+      const data = await getDocs(usersCollectionRef);
+      setUsers(data.docs.map((doc) => ({...doc.data(), id: doc.id })));
+    };
+    getUsers();
+  }, []);
+
   return (
     <div className="app">
      <h1>High End Secret Recipes ✔️</h1>
 
-
     
-
      <form className="app__searchForm" onSubmit={onSubmit}>
        <input 
        type="text" 
@@ -41,10 +61,27 @@ function App() {
        value={query}
        onChange={(e) => setQuery(e.target.value)} 
        />
+       
        <input className="app__submit" type="submit" value="Search"/>
+       
+       <input placeholder="Login..." 
+       onChange={(event) => {
+         setNewLogin(event.target.value);
+       }}
+       />
+       <input placeholder="Pass..." 
+       onChange={(event) => {
+         setNewPass(event.target.value);
+       }}
+        />
+       <button onClick = {createUser}> Create User </button>
 
-
-      
+       {users.map((user) => {
+          return <div>
+            <h1>Login: {user.Login} </h1>
+            <h1>Pass: {user.Pass} </h1>
+          </div>
+        })}
 
        <button onClick={() => calorie(0,500)}>0-500</button>
        <button onClick={() => calorie(501,1000)}>501-1000</button>
@@ -90,7 +127,7 @@ function App() {
         <button onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
         <button onClick={() => sethealthLabel("")}>Reset</button>
        
-        
+
      </form>
      <div className='app__recipes'>
       {recipes.map((recipe) =>{
