@@ -7,7 +7,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-image: url('giphy.gif') ;
+  background-color: white; 
 }
 
 *{
@@ -19,3 +19,71 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.visiting {
+  position: relative;
+  max-width: 50%;
+  top: 50px;
+  left: 360px;
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 2s linear;
+  border: 20px;
+}
+/*750*/
+
+.calories{
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  top: 150px;
+  left: 120px;
+}
+
+.dishtype{
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  top: 260px;
+  left: 100px;
+}
+
+.healthlabel{
+  font-family: 'Montserrat', sans-serif;
+  position: relative;
+  top: 450px;
+  left: 90px;
+
+}
+
+.bottom{
+  position: relative;
+  width: 100%;
+  bottom: -500px;
+
+  color: white;
+  text-align: center;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media all and (min-width: 2560px) {
+
+  .visiting{
+    max-width:50%; 
+    left: 650px;
+  }
+  body{
+    background-color: aqua;
+  }
+}
+

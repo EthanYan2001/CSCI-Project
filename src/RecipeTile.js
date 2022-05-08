@@ -17,6 +17,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
         <img className="recipeTile__img" src={recipe["recipe"]["image"]} />
         </a>
        <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
+       <button onClick> Save Button</button>
         </div>
     
   );
@@ -31,6 +32,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
             </a>
            
            <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
+           <button onClick> Save Button</button>
             </div>
         
       );
@@ -59,6 +61,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
               </a>
               
              <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
+             <button onClick> Save Button</button>
               </div>
           
         );
@@ -73,6 +76,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
                   </a>
                 
                  <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
+                 <button onClick> Save Button</button>
                   </div>
               
             );
