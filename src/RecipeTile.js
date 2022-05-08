@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import "./RecipeTile.css"
 //import {} from "./firebasefirestore";
 import {saveRecipe} from "./App"
 import { db } from './firebase-config'
-import { collection, addDoc} from '@firebase/firestore'
+import { collection, addDoc} from 'firebase/firestore';
+import { async } from '@firebase/util';
 
-export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,dishType, url}) {
+export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,dishType}) {
 
   const urlCollectionRef = collection(db, "saveUrl");
-
+  
   const saveUrl = async () =>{
-    await addDoc(urlCollectionRef,{url:url})
+    await addDoc(urlCollectionRef,{Recipe: recipe["recipe"]["shareAs"], itemName:recipe["recipe"]["label"]})
 }
+
 
 if(recipe['recipe']['calories'] >= minCalorie){
   if(recipe['recipe']['calories']<= maxCalorie){
@@ -28,7 +30,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
         <img className="recipeTile__img" src={recipe["recipe"]["image"]} />
         </a>
        <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-       <button onClick = {saveUrl}> Save Button</button>
+       <button onClick = {saveUrl}> Save Button </button>
         </div>
     
   );
@@ -43,7 +45,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
             </a>
            
            <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-           <button onClick> Save Button</button>
+           <button onClick = {saveUrl}> Save Button</button>
             </div>
         
       );
@@ -72,7 +74,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
               </a>
               
              <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-             <button onClick> Save Button</button>
+             <button onClick = {saveUrl}> Save Button</button>
               </div>
           
         );
@@ -87,7 +89,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
                   </a>
                 
                  <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-                 <button onClick> Save Button</button>
+                 <button onClick = {saveUrl} > Save Button</button>
                   </div>
               
             );

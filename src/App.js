@@ -37,6 +37,7 @@ function App() {
   async function getRecipes(){
     var result = await Axios.get(url);
     setrecipes(result.data.hits)
+    //setNewUrl(result.data.hits[0].recipe.url)
     console.log(result.data)
   }
 
@@ -212,7 +213,7 @@ function App() {
      </form>
      <div className='app__recipes'>
       {recipes.map((recipe) =>{
-         return  <RecipeTile recipe={recipe} minCalorie={minCalorie} maxCalorie={maxCalorie} healthLabel={healthLabel} dishType={dishType} url={url}/>;
+         return  <RecipeTile recipe={recipe} minCalorie={minCalorie} maxCalorie={maxCalorie} healthLabel={healthLabel} dishType={dishType}/>;
       })}
      </div>
     </div>
