@@ -1,5 +1,7 @@
 import React from 'react'
 import "./RecipeTile.css"
+//import {} from "./firebasefirestore";
+//import {saveItem} from "./App"
 export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,dishType}) {
 
 if(recipe['recipe']['calories'] >= minCalorie){
@@ -17,7 +19,7 @@ if(recipe['recipe']['dishType'].includes(dishType) == true){
         <img className="recipeTile__img" src={recipe["recipe"]["image"]} />
         </a>
        <p className="recipeTile__name">{recipe["recipe"]["label"]}</p>
-       <button onClick> Save Button</button>
+       <button onClick = "Signup.html"> Save Button</button>
         </div>
     
   );

@@ -17,7 +17,6 @@ function App() {
   const usersCollectionRef = collection(db, "users");
   const[newLogin, setNewLogin] = useState("");
   const[newPass, setNewPass] = useState("");
-
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
@@ -26,19 +25,27 @@ function App() {
     console.log(result.data)
   }
 
-  const onSubmit = (e) => {
-    e.preventDefault();
-    getRecipes();
-  }
-
   function calorie(min,max){
     setMinCalorie(min);
     setMaxCalorie(max);
   }
 
+  function myOnClickButton() {
+    document.location.href = "Signup.html";
+  }
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    getRecipes();
+  }
+
   const createUser = async () => {
     await addDoc(usersCollectionRef, {Login: newLogin, Pass: newPass });
   };
+  
+  // const loginUser = async () => {
+  //   await getDoc(usersCollectionRef, {Login: Login, Pass: Pass})
+  // }
 
   useEffect(() => {
     const getUsers = async() => {
@@ -47,6 +54,60 @@ function App() {
     };
     getUsers();
   }, []);
+
+// //get data
+// db.collection('guides').get()
+
+// const signupForm = document.querySelector('#signup-form');
+// signupForm.addEventListener('submit', (e) => {
+//   e.preventDefault();
+
+//   //get user info
+// const login = signupForm['signup-login'].value;
+// const password = signupForm['signup-password'].value;
+
+// //sign up the user
+
+// App.createUserWithLoginAndPassword(login, password).then(cred => {
+//   const modal = document.querySelector('#modal-signup');
+//   M.modal.getInstance(modal).close();
+//   signupForm.reset();
+//   });
+// });
+// //logout
+// const logout = document.querySelector('#logout');
+// logout.addEventListener('click', (e) => {
+//   e.preventDefault();
+//   App.signout().then(() => {
+//     console.log('user signed out');
+//   });
+// });
+
+// //login
+// const loginForm = document.querySelector('#login-form');
+// loginForm.addEventListener('submit', (e) => {
+//   e.preventDefault();
+
+//   //get info
+//   const login = loginForm['login-login'].value;
+//   const password = loginForm['login-password'].value;
+
+//   auth.createUserWithLoginAndPassword(login, password).then(cred => {
+//     console.log(cred)
+//     M.modal = document.querySelector('#modal-signup');
+//     M.modal.getInstance(modal).close();
+//     signupForm.reset();
+//   })
+// })
+
+// document.addEventListener('DOMContentLoaded', function() {
+
+//   var modals = document.querySelectorALl('.modal');
+//   M.Modal.init(modals);
+
+//   var items = document.querySelectorAll('.collapsible');
+//   M.Collapsible.init(items);
+// });
 
   return (
     <div className="app">
@@ -62,7 +123,8 @@ function App() {
        />
        <input className="app__submit" type="submit" value="Search"/>
 
-       
+       <button onClick = {myOnClickButton}> Sign Up </button>
+
 <div className='calo'>
        <button className='suus1' onClick={() => calorie(0,500)}>0-500</button>
        <button className='suus2' onClick={() => calorie(501,1000)}>501-1000</button>
@@ -70,8 +132,6 @@ function App() {
        <button className='suus4' onClick={() => calorie(1501,2000)}>1501-2000</button>
        <button className='suus5' onClick={() => calorie(0,99999)}>All</button>
 </div>
-
-
 
         <button className='bust1' onClick={() => setDishType("alcohol-cocktail")}>Alcohol Cocktail</button>
         <button className='bust2' onClick={() => setDishType("bread")}>Bread</button>
@@ -84,9 +144,6 @@ function App() {
         <button className='bust9' onClick={() => setDishType("starter")}>Starter</button>
         <button className='bust11' onClick={() => setDishType("salad")}>Salad</button>
         <button className='bust12' onClick={() => setDishType("")}>Reset</button>
-
-
-
 
 
         <button className='what1' onClick={() => sethealthLabel("Alcohol-Free")}>Alcohol Free</button>
@@ -108,26 +165,27 @@ function App() {
         <button className='what18'  onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
         <button className='what19'  onClick={() => sethealthLabel("")}>Reset</button>
        
-        {/* <input placeholder="Login..." 
-onChange={(event) => {
-  setNewLogin(event.target.value);
-}}
-/>
-<input placeholder="Pass..." 
-onChange={(event) => {
-  setNewPass(event.target.value);
-}}
- />
-<button onClick = {createUser}> Create User </button>
+      
+        { <><input placeholder="Login..."
+          onChange={(event) => {
+            setNewLogin(event.target.value);
+          } } /><input placeholder="Pass..."
+            onChange={(event) => {
+              setNewPass(event.target.value);
+            } } /></>
+} 
 
-{users.map((user) => {
+{ <button onClick = {createUser}> Create User </button> }
+
+{/* {users.map((user) => {
    return <div>
      <h1>Login: {user.Login} </h1>
      <h1>Pass: {user.Pass} </h1>
    </div>
- })} */
- }
- 
+ })
+ } */}
+
+
      </form>
      <div className='app__recipes'>
       {recipes.map((recipe) =>{
