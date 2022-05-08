@@ -4,6 +4,9 @@ import { useState, useEffect} from "react"
 import RecipeTile from './RecipeTile';
 import {collection, getDocs, addDoc } from "firebase/firestore";
 import { db } from "./firebase-config";
+import { auth } from './firebase-config';
+import { createUserWithEmailAndPassword, onAuthStateChanged, signOut } from '@firebase/auth';
+import { async } from '@firebase/util';
 
 
 function App() {
@@ -15,8 +18,15 @@ function App() {
   const [healthLabel, sethealthLabel] = useState('')
   const [users, setUsers] = useState([]);
   const usersCollectionRef = collection(db, "users");
-  const[newLogin, setNewLogin] = useState("");
+  //const saveRecipeCollectionRef = collection(db, "saveRecipe");
+  const[newEmail, setNewLogin] = useState("");
   const[newPass, setNewPass] = useState("");
+  const[registerEmail, setRegisterEmail] = useState('');
+  const[registerPassword, setRegisterPassword] = useState('');
+  const[loginEmail, setLoginEmail] = useState('');
+  const[loginPassword, setLoginPassword] = useState('');
+  const[user, setUser] = useState({});
+ 
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
@@ -30,9 +40,9 @@ function App() {
     setMaxCalorie(max);
   }
 
-  function myOnClickButton() {
-    document.location.href = "Signup.html";
-  }
+  // function myOnClickButton() {
+  //   document.location.href = "Signup.html";
+  // }
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -40,13 +50,13 @@ function App() {
   }
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, {Login: newLogin, Pass: newPass });
+    await addDoc(usersCollectionRef, {Login: newEmail, Pass: newPass });
+    // var popup = document.createElement("span");
+    // popup.className = "popup";
+    // popup.innerText = "You've signed in";
+    // document.querySelector("#root > div > form").appendChild(popup);
   };
   
-  // const loginUser = async () => {
-  //   await getDoc(usersCollectionRef, {Login: Login, Pass: Pass})
-  // }
-
   useEffect(() => {
     const getUsers = async() => {
       const data = await getDocs(usersCollectionRef);
@@ -55,60 +65,31 @@ function App() {
     getUsers();
   }, []);
 
-// //get data
-// db.collection('guides').get()
+  const register = async() => {
+  try {
+    const user = await createUserWithEmailAndPassword(auth, registerEmail, registerPassword);
+    console.log(user)
+  }catch (error) {
+    console.log(error.message);
+   }
+  };
 
-// const signupForm = document.querySelector('#signup-form');
-// signupForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
+  const login = async () => {
+    try {
+      const user = await createUserWithEmailAndPassword(auth, loginEmail, loginPassword);
+      console.log(user)
+    }catch (error) {
+      console.log(error.message);
+     }
+  };
 
-//   //get user info
-// const login = signupForm['signup-login'].value;
-// const password = signupForm['signup-password'].value;
+  const logout = async () => {
+    await signOut(auth);
+  }
 
-// //sign up the user
-
-// App.createUserWithLoginAndPassword(login, password).then(cred => {
-//   const modal = document.querySelector('#modal-signup');
-//   M.modal.getInstance(modal).close();
-//   signupForm.reset();
-//   });
-// });
-// //logout
-// const logout = document.querySelector('#logout');
-// logout.addEventListener('click', (e) => {
-//   e.preventDefault();
-//   App.signout().then(() => {
-//     console.log('user signed out');
-//   });
-// });
-
-// //login
-// const loginForm = document.querySelector('#login-form');
-// loginForm.addEventListener('submit', (e) => {
-//   e.preventDefault();
-
-//   //get info
-//   const login = loginForm['login-login'].value;
-//   const password = loginForm['login-password'].value;
-
-//   auth.createUserWithLoginAndPassword(login, password).then(cred => {
-//     console.log(cred)
-//     M.modal = document.querySelector('#modal-signup');
-//     M.modal.getInstance(modal).close();
-//     signupForm.reset();
-//   })
-// })
-
-// document.addEventListener('DOMContentLoaded', function() {
-
-//   var modals = document.querySelectorALl('.modal');
-//   M.Modal.init(modals);
-
-//   var items = document.querySelectorAll('.collapsible');
-//   M.Collapsible.init(items);
-// });
-
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   setUser(currentUser);
+  // }) 
   return (
     <div className="app">
      <h1></h1>
@@ -122,8 +103,6 @@ function App() {
        onChange={(e) => setQuery(e.target.value)} 
        />
        <input className="app__submit" type="submit" value="Search"/>
-
-       <button onClick = {myOnClickButton}> Sign Up </button>
 
 <div className='calo'>
        <button className='suus1' onClick={() => calorie(0,500)}>0-500</button>
@@ -166,16 +145,48 @@ function App() {
         <button className='what19'  onClick={() => sethealthLabel("")}>Reset</button>
        
       
-        { <><input placeholder="Login..."
+        { <><input placeholder="Email"
           onChange={(event) => {
             setNewLogin(event.target.value);
-          } } /><input placeholder="Pass..."
+          } } /><input placeholder="Password"
             onChange={(event) => {
               setNewPass(event.target.value);
             } } /></>
+           
 } 
+{ <button onClick = {createUser}> Login </button>
 
-{ <button onClick = {createUser}> Create User </button> }
+}
+<div>
+  <h3> Register </h3>
+ <input placeholder = "Email..." onChange = {(event) => {setRegisterEmail(event.target.value);
+  }}
+ />
+ <input placeholder= "Password..."onChange = {(event) => {setRegisterPassword(event.target.value)
+  }}
+ />
+  <button onClick = {register}> Sign Up </button>
+</div>
+
+
+<div>
+  <h3> Login </h3>
+  <input placeholder = "Email..." onChange = {(event) => {setLoginEmail(event.target.value);
+  }}
+ />
+ <input placeholder= "Password..."onChange = {(event) => {setLoginPassword(event.target.value)
+  }}
+ />
+
+ <button onClick = { login }> Login </button>
+
+<h4> User Logged In </h4>
+{auth?.email}
+
+<button onClick= { logout }> Sign Out </button>
+
+</div>
+
 
 {/* {users.map((user) => {
    return <div>
