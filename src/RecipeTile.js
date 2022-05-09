@@ -11,7 +11,7 @@ export default function RecipeTile({recipe ,minCalorie,maxCalorie,healthLabel,di
   const urlCollectionRef = collection(db, "saveUrl");
   
   const saveUrl = async () =>{
-    await addDoc(urlCollectionRef,{Recipe: recipe["recipe"]["shareAs"], itemName:recipe["recipe"]["label"]})
+    await addDoc(urlCollectionRef,{Recipe: recipe["recipe"]["shareAs"], itemName:recipe["recipe"]["label"], Photo:recipe["recipe"]["image"] })
 }
 
 

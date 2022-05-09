@@ -60,10 +60,6 @@ function App() {
 
   const createUser = async () => {
     await addDoc(usersCollectionRef, {Login: newEmail, Pass: newPass });
-    // var popup = document.createElement("span");
-    // popup.className = "popup";
-    // popup.innerText = "You've signed in";
-    // document.querySelector("#root > div > form").appendChild(popup);
   };
   
   useEffect(() => {
@@ -152,7 +148,7 @@ function App() {
         <button className='what17'  onClick={() => sethealthLabel("Vegetarian")}>Vegetarian</button>
         <button className='what18'  onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
         <button className='what19'  onClick={() => sethealthLabel("")}>Reset</button>
-        <button className='signupbutton'  onClick={() => sethealthLabel("")}>Sign Up!</button>
+        
        
       
         { <><input placeholder="Email"
