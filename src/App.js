@@ -25,13 +25,8 @@ function App() {
   const[registerPassword, setRegisterPassword] = useState('');
   const[loginEmail, setLoginEmail] = useState('');
   const[loginPassword, setLoginPassword] = useState('');
-  
- const [user, setUser] = useState({});
+  const [user, setUser] = useState({});
  
-//  onAuthStateChanged(auth, (currentUser) => {
-//    setUser(currentUser);
-//  });
-
   var url = 'https://api.edamam.com/search?q='+query+'&app_id=e809220e&app_key=ba152795aeafa6ba51f27de259ed2d4b';
 
   async function getRecipes(){
@@ -41,6 +36,19 @@ function App() {
     console.log(result.data)
   }
 
+  // function basework(){
+  //   this.myRef = React.createRef();
+  //   if(present == false) {
+  //    //document.getElementById('sauce').style.right = '9999px';
+  //    this.myRef.current.style.right = '9999px';
+  //     setPresent(true);
+  //   } else {
+  //     //document.getElementById('sauce').style.right = '845px';
+  //     this.myRef.current.style.right = '845px';
+  //     setPresent(false);
+  //   }
+  // }
+  
   function calorie(min,max){
     setMinCalorie(min);
     setMaxCalorie(max);
@@ -50,9 +58,7 @@ function App() {
   //   document.location.href = "Signup.html";
   // }
 
-  function saveRecipeCollectionRef() {
 
-  }
   const onSubmit = (e) => {
     e.preventDefault();
     getRecipes();
@@ -95,6 +101,10 @@ function App() {
     await signOut(auth);
   }
   
+  // onAuthStateChanged(auth, (currentUser) => {
+  //   setUser(currentUser);
+  // });
+
   return (
     <div className="app">
      <h1></h1>
@@ -149,9 +159,10 @@ function App() {
         <button className='what18'  onClick={() => sethealthLabel("Wheat-Free")}>Wheat Free</button>
         <button className='what19'  onClick={() => sethealthLabel("")}>Reset</button>
         
+        
        
       
-        { <><input placeholder="Email"
+        {/* { <><input placeholder="Email"
           onChange={(event) => {
             setNewLogin(event.target.value);
           } } /><input placeholder="Password"
@@ -160,39 +171,41 @@ function App() {
             } } /></>
            
 } 
-{ <button onClick = {createUser}> Login </button>}
+{ <button onClick = {createUser}> Login </button>} */}
 
 {/* Register button that would allow the button to successfully register with email and password */}
+
 <div>
-  <h3> Register </h3>
- <input placeholder = "Email..." onChange = {(event) => {setRegisterEmail(event.target.value);
+  <h3 className = "register" > Register Today! </h3>
+ <input className = "email" placeholder = "Email..." onChange = {(event) => {setRegisterEmail(event.target.value);
   }}
  />
- <input placeholder= "Password..."onChange = {(event) => {setRegisterPassword(event.target.value)
+ <input className = "password" placeholder= "Password..."onChange = {(event) => {setRegisterPassword(event.target.value)
   }}
  />
-  <button onClick = {register}> Sign Up </button>
+  <button className = "registerbutton" onClick = {register}> Sign Up </button>
 </div>
 
 {/* Login button that allows u to login successfully based on the databased saved from registering */}
 <div>
-  <h3> Login </h3>
-  <input placeholder = "Email..." onChange = {(event) => {setLoginEmail(event.target.value);
+  <h3 className = "login"> Login </h3>
+  <input className = "email2" placeholder = "Email..." onChange = {(event) => {setLoginEmail(event.target.value);
   }}
  />
- <input placeholder= "Password..."onChange = {(event) => {setLoginPassword(event.target.value)
+ <input className = "password2" placeholder= "Password..."onChange = {(event) => {setLoginPassword(event.target.value)
   }}
  />
 
- <button onClick = { login }> Login </button>
+ <button className = "login2" onClick = { login }> Login </button>
  </div>
 
 {/* This is just to authenticate that the email has been login and displayed the email.  */}
-<h4> User Logged In: </h4>
+<h4 className = "userlog"> User Logged In: </h4>
 {user?.email}
 
+
 {/* Log out button based on the logout constant. it lets you logout from the user based on the login databased above. */}
-<button onClick= { logout }> Sign Out </button>
+<button className = "signout" onClick= { logout }> Sign Out </button>
 
 
 
