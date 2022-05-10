@@ -42,14 +42,14 @@ code {
 .dishtype{
   font-family: 'Montserrat', sans-serif;
   position: relative;
-  top: 260px;
+  top: 300px;
   left: 100px;
 }
 
 .healthlabel{
   font-family: 'Montserrat', sans-serif;
   position: relative;
-  top: 450px;
+  top: 560px;
   left: 90px;
 
 }
@@ -64,25 +64,3 @@ code {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-@media all and (min-width: 2560px) {
-
-  .visiting{
-    max-width:50%; 
-    left: 650px;
-  }
-  body{
-    background-color: aqua;
-  }
-}
